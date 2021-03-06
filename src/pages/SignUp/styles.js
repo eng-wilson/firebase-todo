@@ -18,6 +18,15 @@ export const Label = styled.Text`
   padding-bottom: 4px;
 `;
 
+export const StrongTitle = styled.Text`
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+
+  padding-bottom: 48px;
+`;
+
 export const Title = styled.Text`
   color: #fff;
   font-size: 16px;
@@ -40,7 +49,7 @@ export const ActionButton = styled.TouchableOpacity`
   background-color: #01B399;
 `;
 
-export const CreateAccountButton = styled.TouchableOpacity`
+export const BottomButton = styled.TouchableOpacity`
   position: absolute;
   left: 0;
   bottom: 0;
@@ -52,17 +61,8 @@ export const CreateAccountButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export const CreateAccountButtonText = styled.Text`
+export const BottomButtonText = styled.Text`
   color: #FF807B;
   font-size: 18px;
   font-weight: 600;
-`;
-
-export const StrongTitle = styled.Text`
-  color: #333;
-  font-size: 18px;
-  font-weight: 600;
-  text-align: center;
-
-  padding-bottom: 48px;
 `;
