@@ -1,0 +1,12 @@
+{
+  "name": "doctuz",
+  "displayName": "doctuz",
+  "expo": {
+    "name": "doctuz",
+    "slug": "doctuz",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
