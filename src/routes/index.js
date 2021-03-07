@@ -1,20 +1,11 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 
-import SignIn from '../pages/SignIn';
-import SignUp from '../pages/SignUp';
-
-const Stack = createStackNavigator();
+import AuthRoutes from './auth.routes';
+import AppRoutes from './app.routes';
 
 function Routes() {
-  return (
-    <Stack.Navigator screenOptions={{
-      headerShown: false,
-    }}
-    >
-      <Stack.Screen name="SignIn" component={SignIn} />
-      <Stack.Screen name="SignUp" component={SignUp} />
-    </Stack.Navigator>
+  return (true ? <AppRoutes />
+    : <AuthRoutes />
   );
 }
 
