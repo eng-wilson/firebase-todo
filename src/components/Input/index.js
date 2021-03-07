@@ -2,11 +2,11 @@
 import React, { useRef, useEffect } from 'react';
 import { useField } from '@unform/core';
 
-import { Container, TextInput } from './styles';
+import { Container, TextInput, ErrorMessage } from './styles';
 
 function Input({ name, ...rest }) {
   const {
-    fieldName, registerField, defaultValue = '',
+    fieldName, registerField, defaultValue = '', error,
   } = useField(name);
 
   const inputElementRef = useRef(null);
@@ -29,16 +29,20 @@ function Input({ name, ...rest }) {
   }, [fieldName, registerField]);
 
   return (
-    <Container>
-      <TextInput
-        ref={inputElementRef}
-        {...rest}
-        onChangeText={(value) => {
-          inputValueRef.current.value = value;
-        }}
-        defaultValue={defaultValue}
-      />
-    </Container>
+    <>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <Container isErrored={!!error}>
+        <TextInput
+          ref={inputElementRef}
+          {...rest}
+          onChangeText={(value) => {
+            inputValueRef.current.value = value;
+          }}
+          defaultValue={defaultValue}
+        />
+      </Container>
+
+    </>
   );
 }
 

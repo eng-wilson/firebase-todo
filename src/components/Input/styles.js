@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.View`
   width: 100%;
@@ -8,8 +8,9 @@ export const Container = styled.View`
   margin-bottom: 20px;
 
   background: #fff;
-  border: 2px solid #ddd;
   
+
+  ${(props) => (props.isErrored ? css`border: 2px #ff6961;` : css`border: 2px #ddd;`)}
   border-radius: 10px;
 
   flex-direction: row;
@@ -21,5 +22,9 @@ export const TextInput = styled.TextInput`
   flex: 1;
   color: #000;
   font-size: 14px;
-  
+`;
+
+export const ErrorMessage = styled.Text`
+  color: #ff6961;
+  text-align: left;
 `;

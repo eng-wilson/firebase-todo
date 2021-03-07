@@ -8,13 +8,17 @@ export const Container = styled.View`
   background-color: #fff;
 `;
 
-export const ItemContainer = styled.View`
-  height: 110px;
+export const ItemContainer = styled.TouchableOpacity`
+  height: 100px;
   width: 100%;
 
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 10px 15px;
+
+  margin-bottom: 10px;
+
+  justify-content: center;
 `;
 
 export const ItemTitle = styled.Text`
@@ -28,7 +32,9 @@ export const ItemDescription = styled.Text`
   font-size: 14px;
   font-weight: 400;
 
-  padding: 5px 0px;
+  padding: 5px 0px 10px;
+
+  
 `;
 
 export const TitleContainer = styled.View`
@@ -63,4 +69,15 @@ export const ActionButton = styled.TouchableOpacity`
   
 
   background-color: #01B399;
+`;
+
+export const RowContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const DateText = styled.Text`
+  color: #4E5469;
+  font-size: 14px;
+  padding-left: 7px;
 `;
