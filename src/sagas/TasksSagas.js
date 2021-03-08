@@ -6,11 +6,12 @@ import TasksActions from '../redux/TasksRedux';
 export function* getTasks() {
   try {
     let tasks = [];
-    yield call(() => firestore().collection('tasks').get().then((querySnapshot) => {
-      querySnapshot.forEach((documentSnapshot) => {
-        tasks = [...tasks, { id: documentSnapshot.id, data: documentSnapshot.data() }];
-      });
-    }));
+    yield call(() => firestore().collection('tasks').orderBy('date', 'asc').get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((documentSnapshot) => {
+          tasks = [...tasks, { id: documentSnapshot.id, data: documentSnapshot.data() }];
+        });
+      }));
 
     if (tasks) {
       yield put(TasksActions.tasksSuccess(tasks));
