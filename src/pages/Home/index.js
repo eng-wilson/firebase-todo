@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Calendar from '../../assets/calendar.png';
+
+import TasksActions from '../../redux/TasksRedux';
 
 import {
   Container,
@@ -18,19 +20,12 @@ import {
 } from './styles';
 
 const Home = ({ navigation }) => {
-  const [tasks, setTasks] = useState([]);
+  const dispatch = useDispatch();
+  const { tasks } = useSelector((state) => state.tasks);
 
-  async function getTasks() {
+  function getTasks() {
     try {
-      const jsonValue = await AsyncStorage.getItem('@tasks');
-
-      console.tron.log(JSON.parse(jsonValue));
-
-      if (jsonValue !== null) {
-        setTasks(JSON.parse(jsonValue));
-      } else {
-        setTasks([]);
-      }
+      dispatch(TasksActions.tasksRequest());
     } catch (e) {
       console.tron.log(e);
     }

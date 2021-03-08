@@ -17,11 +17,11 @@ const SignUp = ({ navigation }) => {
 
   const [fetching, setFetching] = useState(false);
 
-  async function handleSubmit(data) {
+  function handleSubmit(data) {
     try {
       setFetching(true);
 
-      await dispatch(AuthActions.signUpRequest(data.email, data.password));
+      dispatch(AuthActions.signUpRequest(data.email, data.password));
 
       setFetching(false);
     } catch (e) {

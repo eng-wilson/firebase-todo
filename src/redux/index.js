@@ -7,6 +7,7 @@ import rootSaga from '../sagas';
 
 const rootReducer = combineReducers({
   auth: require('./AuthRedux').reducer,
+  tasks: require('./TasksRedux').reducer,
 });
 
 const createStore = configureStore(rootReducer, rootSaga);

@@ -16,11 +16,11 @@ const SignIn = ({ navigation }) => {
   const formRef = useRef(null);
   const [fetching, setFetching] = useState(false);
 
-  async function handleSubmit(data) {
+  function handleSubmit(data) {
     try {
       setFetching(true);
 
-      await dispatch(AuthActions.authRequest(data.email, data.password));
+      dispatch(AuthActions.authRequest(data.email, data.password));
 
       setFetching(false);
     } catch (e) {
