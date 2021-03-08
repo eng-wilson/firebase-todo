@@ -1,14 +1,21 @@
 import { call, put } from 'redux-saga/effects';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
 
 import TasksActions from '../redux/TasksRedux';
 
 export function* getTasks() {
   try {
-    const response = yield call(() => AsyncStorage.getItem('@tasks'));
+    let tasks = [];
+    yield call(() => firestore().collection('tasks').get().then((querySnapshot) => {
+      querySnapshot.forEach((documentSnapshot) => {
+        tasks = [...tasks, { id: documentSnapshot.id, data: documentSnapshot.data() }];
+        // console.tron.log(documentSnapshot.id, documentSnapshot.data());
+      });
+    }));
 
-    if (response) {
-      yield put(TasksActions.tasksSuccess(JSON.parse(response)));
+    console.tron.logImportant(tasks);
+    if (tasks) {
+      yield put(TasksActions.tasksSuccess(tasks));
     } else {
       yield put(TasksActions.tasksSuccess([]));
     }

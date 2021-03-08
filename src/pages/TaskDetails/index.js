@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import firestore from '@react-native-firebase/firestore';
 
 import Input from '../../components/Input';
 // Utils
@@ -13,9 +13,11 @@ import {
   Container, Label, ButtonsContainer, ActionButton, ButtonTitle,
 } from './styles';
 
-const AddTask = ({ navigation }) => {
+const TaskDetails = ({ route, navigation }) => {
+  const task = route.params;
   const formRef = useRef(null);
-  const [date, setDate] = useState(new Date(1598051730000));
+
+  const [date, setDate] = useState(new Date(task.data.date._seconds * 1000));
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -23,19 +25,6 @@ const AddTask = ({ navigation }) => {
 
     console.tron.log(currentDate);
   };
-
-  const getTasks = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@tasks');
-      return jsonValue !== null ? JSON.parse(jsonValue) : [];
-    } catch (e) {
-      return [];
-    }
-  };
-
-  function getFormattedDate() {
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-  }
 
   async function handleSubmit(data) {
     try {
@@ -48,9 +37,14 @@ const AddTask = ({ navigation }) => {
 
       await schema.validate(data, { abortEarly: false });
 
-      const storagedTasks = await getTasks();
-
-      await AsyncStorage.setItem('@tasks', JSON.stringify([...storagedTasks, { title: data.title, description: data.description, date: getFormattedDate() }]));
+      await firestore()
+        .collection('tasks')
+        .doc(task.id)
+        .update({
+          title: data.title,
+          description: data.description,
+          date: firestore.Timestamp.fromDate(date),
+        });
 
       Alert.alert('Sucesso ✅', 'Tarefa adicionada à lista');
     } catch (err) {
@@ -62,8 +56,16 @@ const AddTask = ({ navigation }) => {
     }
   }
 
+  useEffect(() => {
+    formRef.current.setData({ title: task.data.title, description: task.data.description });
+  }, []);
+
   return (
     <Container>
+      <ActionButton action="delete" onPress={() => formRef.current.submitForm()}>
+        <ButtonTitle>Excluir</ButtonTitle>
+      </ActionButton>
+
       <Form ref={formRef} onSubmit={handleSubmit}>
         <Label>Título</Label>
         <Input name="title" />
@@ -93,8 +95,9 @@ const AddTask = ({ navigation }) => {
         </ButtonsContainer>
 
       </Form>
+
     </Container>
   );
 };
 
-export default AddTask;
+export default TaskDetails;

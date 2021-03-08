@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ScrollView, Image } from 'react-native';
+import { Image, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Calendar from '../../assets/calendar.png';
@@ -31,6 +31,10 @@ const Home = ({ navigation }) => {
     }
   }
 
+  function getFormattedDate(date) {
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  }
+
   useEffect(() => {
     navigation.addListener('focus', () => {
       getTasks();
@@ -48,22 +52,24 @@ const Home = ({ navigation }) => {
         </ActionButton>
       </TitleContainer>
 
-      <ScrollView style={{ flex: 1 }}>
-        {tasks.map((task) => (
-          <ItemContainer key={tasks.indexOf(task)}>
-            <ItemTitle>{task.title}</ItemTitle>
+      <FlatList
+        data={tasks}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <ItemContainer onPress={() => navigation.navigate('TaskDetails', item)}>
+            <ItemTitle>{item.data.title}</ItemTitle>
 
-            <ItemDescription numberOfLines={2}>{task.description}</ItemDescription>
+            <ItemDescription numberOfLines={2}>{item.data.description}</ItemDescription>
 
             <RowContainer>
               <Image source={Calendar} style={{ height: 18, width: 21 }} />
 
-              <DateText>{(task.date)}</DateText>
+              <DateText>{getFormattedDate(new Date(item.data.date._seconds * 1000))}</DateText>
             </RowContainer>
           </ItemContainer>
-        ))}
+        )}
+      />
 
-      </ScrollView>
     </Container>
   );
 };
