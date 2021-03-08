@@ -62,3 +62,19 @@ export const ButtonTitle = styled.Text`
   font-weight: 600;
   text-align: center;
 `;
+
+export const DateContainer = styled.TouchableOpacity`
+    width: 100%;
+  height: 50px;
+  
+  padding: 0px 16px;
+  margin-bottom: 20px;
+
+  background: #fff;
+
+  border: 2px #ddd;
+  border-radius: 10px;
+
+  flex-direction: row;
+  align-items: center;
+`;

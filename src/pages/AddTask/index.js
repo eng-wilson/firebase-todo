@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Alert, ActivityIndicator } from 'react-native';
+import { Alert, ActivityIndicator, Platform } from 'react-native';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -10,17 +10,19 @@ import Input from '../../components/Input';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import {
-  Container, Label, ButtonsContainer, ActionButton, ButtonTitle,
+  Container, Label, ButtonsContainer, ActionButton, ButtonTitle, DateContainer,
 } from './styles';
 
 const AddTask = ({ navigation }) => {
   const formRef = useRef(null);
   const [date, setDate] = useState(new Date());
   const [fetching, setFetching] = useState(false);
+  const [show, setShow] = useState(false);
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
+    setShow(Platform.OS === 'ios');
   };
 
   async function handleSubmit(data) {
@@ -69,6 +71,13 @@ const AddTask = ({ navigation }) => {
 
         <Label>Data</Label>
 
+        {Platform.OS !== 'ios' && (
+        <DateContainer onPress={() => setShow(true)}>
+          <Label>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</Label>
+        </DateContainer>
+        )}
+
+        {show && (
         <DateTimePicker
           testID="dateTimePicker"
           value={date}
@@ -77,6 +86,7 @@ const AddTask = ({ navigation }) => {
           onChange={onChangeDate}
           locale="pt-BR"
         />
+        )}
 
         <ButtonsContainer>
           <ActionButton action="back" onPress={() => navigation.goBack()}>

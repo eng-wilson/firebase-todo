@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "270222508200",
+    "project_id": "doctuz-77471",
+    "storage_bucket": "doctuz-77471.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270222508200:android:6cf1e673880b12c1a3c29d",
+        "android_client_info": {
+          "package_name": "com.doctuz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270222508200-d9dtks9i36j4r4kp7b15au8a6m5u3f3k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXxv1WIAUiisCRKfME55tTzMyu8cAP4mU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270222508200-d9dtks9i36j4r4kp7b15au8a6m5u3f3k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "270222508200-1cfutluevf9eggavsdgjuq1kk1h3knhm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.name.doctuz"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
