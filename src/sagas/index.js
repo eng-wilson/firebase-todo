@@ -6,7 +6,7 @@ import { AuthTypes } from '../redux/AuthRedux';
 import { TasksTypes } from '../redux/TasksRedux';
 
 /* ------------- Sagas ------------- */
-import { getSignIn, getSignUp } from './AuthSagas';
+import { getSignIn, getSignUp, logout } from './AuthSagas';
 
 import { getTasks } from './TasksSagas';
 
@@ -21,6 +21,7 @@ export default function* root() {
   // SignIn
   yield takeLatest(AuthTypes.AUTH_REQUEST, getSignIn);
   yield takeLatest(AuthTypes.SIGN_UP_REQUEST, getSignUp);
+  yield takeLatest(AuthTypes.LOGOUT_REQUEST, logout);
 
   yield takeLatest(TasksTypes.TASKS_REQUEST, getTasks);
 }

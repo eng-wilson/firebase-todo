@@ -39,7 +39,7 @@ export const ItemDescription = styled.Text`
 
 export const TitleContainer = styled.View`
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 
   margin: 20px 0px;
