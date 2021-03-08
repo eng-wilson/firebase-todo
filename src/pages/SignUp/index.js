@@ -1,15 +1,18 @@
 import React, { useRef, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { Form } from '@unform/mobile';
-import auth from '@react-native-firebase/auth';
+import { useDispatch } from 'react-redux';
 
 import Input from '../../components/Input';
+
+import AuthActions from '../../redux/AuthRedux';
 
 import {
   Container, Label, Title, ActionButton, BottomButton, BottomButtonText, StrongTitle,
 } from './styles';
 
 const SignUp = ({ navigation }) => {
+  const dispatch = useDispatch();
   const formRef = useRef(null);
 
   const [fetching, setFetching] = useState(false);
@@ -18,18 +21,10 @@ const SignUp = ({ navigation }) => {
     try {
       setFetching(true);
 
-      const response = await auth().createUserWithEmailAndPassword(data.email, data.password);
+      await dispatch(AuthActions.signUpRequest(data.email, data.password));
 
       setFetching(false);
-
-      navigation.navigate('SignIn');
-
-      if (response) {
-        console.tron.log(response);
-      }
     } catch (e) {
-      console.tron.log(e);
-
       setFetching(false);
     }
   }

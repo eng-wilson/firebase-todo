@@ -1,32 +1,34 @@
-import React, { useRef } from 'react';
-import { Alert } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Form } from '@unform/mobile';
-import auth from '@react-native-firebase/auth';
 
 import Input from '../../components/Input';
+
+import AuthActions from '../../redux/AuthRedux';
 
 import {
   Container, Label, Title, ActionButton, CreateAccountButton, CreateAccountButtonText, StrongTitle,
 } from './styles';
 
 const SignIn = ({ navigation }) => {
+  const dispatch = useDispatch();
   const formRef = useRef(null);
+  const [fetching, setFetching] = useState(false);
 
   async function handleSubmit(data) {
     try {
-      const response = await auth().signInWithEmailAndPassword(data.email, data.password);
+      setFetching(true);
 
-      console.tron.log(response);
+      await dispatch(AuthActions.authRequest(data.email, data.password));
 
-      if (response && response.user) {
-        Alert.alert('Success ✅', 'Authenticated successfully');
-      }
+      setFetching(false);
     } catch (e) {
-      console.error(e.message);
+      setFetching(false);
     }
   }
 
-  return (
+  return fetching ? <ActivityIndicator style={{ flex: 1 }} /> : (
     <Container>
       <StrongTitle>Login</StrongTitle>
 

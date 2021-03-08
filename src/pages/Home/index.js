@@ -55,7 +55,7 @@ const Home = ({ navigation }) => {
 
       <ScrollView style={{ flex: 1 }}>
         {tasks.map((task) => (
-          <ItemContainer>
+          <ItemContainer key={tasks.indexOf(task)}>
             <ItemTitle>{task.title}</ItemTitle>
 
             <ItemDescription numberOfLines={2}>{task.description}</ItemDescription>
