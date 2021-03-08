@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, ActivityIndicator } from 'react-native';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import firestore from '@react-native-firebase/firestore';
 
 import Input from '../../components/Input';
 // Utils
@@ -15,27 +15,13 @@ import {
 
 const AddTask = ({ navigation }) => {
   const formRef = useRef(null);
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
+  const [fetching, setFetching] = useState(false);
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
-
-    console.tron.log(currentDate);
   };
-
-  const getTasks = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@tasks');
-      return jsonValue !== null ? JSON.parse(jsonValue) : [];
-    } catch (e) {
-      return [];
-    }
-  };
-
-  function getFormattedDate() {
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-  }
 
   async function handleSubmit(data) {
     try {
@@ -48,9 +34,17 @@ const AddTask = ({ navigation }) => {
 
       await schema.validate(data, { abortEarly: false });
 
-      const storagedTasks = await getTasks();
+      setFetching(true);
 
-      await AsyncStorage.setItem('@tasks', JSON.stringify([...storagedTasks, { title: data.title, description: data.description, date: getFormattedDate() }]));
+      firestore()
+        .collection('tasks')
+        .add({
+          title: data.title,
+          description: data.description,
+          date: firestore.Timestamp.fromDate(date),
+        });
+
+      setFetching(false);
 
       Alert.alert('Sucesso ✅', 'Tarefa adicionada à lista');
     } catch (err) {
@@ -59,10 +53,12 @@ const AddTask = ({ navigation }) => {
 
         formRef.current?.setErrors(errors);
       }
+
+      setFetching(false);
     }
   }
 
-  return (
+  return fetching ? <ActivityIndicator style={{ flex: 1 }} /> : (
     <Container>
       <Form ref={formRef} onSubmit={handleSubmit}>
         <Label>Título</Label>

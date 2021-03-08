@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
-import { Image, FlatList } from 'react-native';
+import {
+  Image, FlatList, RefreshControl, Alert,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Calendar from '../../assets/calendar.png';
@@ -22,17 +24,22 @@ import {
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { tasks } = useSelector((state) => state.tasks);
+  const { fetching } = useSelector((state) => state.tasks);
 
   function getTasks() {
     try {
       dispatch(TasksActions.tasksRequest());
     } catch (e) {
-      console.tron.log(e);
+      Alert.alert('Ops', 'Não foi possível obter a lista de tarefas');
     }
   }
 
   function getFormattedDate(date) {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  }
+
+  function onRefresh() {
+    getTasks();
   }
 
   useEffect(() => {
@@ -55,6 +62,14 @@ const Home = ({ navigation }) => {
       <FlatList
         data={tasks}
         keyExtractor={(item) => item.id}
+        refreshControl={(
+          <RefreshControl
+            tintColor="#ccc"
+            colors={['#ccc']}
+            refreshing={fetching}
+            onRefresh={onRefresh}
+          />
+        )}
         renderItem={({ item }) => (
           <ItemContainer onPress={() => navigation.navigate('TaskDetails', item)}>
             <ItemTitle>{item.data.title}</ItemTitle>

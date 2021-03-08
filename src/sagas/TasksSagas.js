@@ -9,11 +9,9 @@ export function* getTasks() {
     yield call(() => firestore().collection('tasks').get().then((querySnapshot) => {
       querySnapshot.forEach((documentSnapshot) => {
         tasks = [...tasks, { id: documentSnapshot.id, data: documentSnapshot.data() }];
-        // console.tron.log(documentSnapshot.id, documentSnapshot.data());
       });
     }));
 
-    console.tron.logImportant(tasks);
     if (tasks) {
       yield put(TasksActions.tasksSuccess(tasks));
     } else {

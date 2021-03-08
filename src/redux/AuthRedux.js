@@ -30,7 +30,6 @@ export const request = (state) => state.merge({ fetching: true });
 
 // we've successfully logged in
 export const success = (state, action) => {
-  console.tron.logImportant(action);
   const { uid } = action;
 
   return state.merge({ fetching: false, error: null, uid });
