@@ -9,6 +9,8 @@ export function* getTasks() {
 
     if (response) {
       yield put(TasksActions.tasksSuccess(JSON.parse(response)));
+    } else {
+      yield put(TasksActions.tasksSuccess([]));
     }
   } catch (error) {
     yield put(TasksActions.tasksFailure(error.message));

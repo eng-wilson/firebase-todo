@@ -58,7 +58,7 @@ const Home = ({ navigation }) => {
             <RowContainer>
               <Image source={Calendar} style={{ height: 18, width: 21 }} />
 
-              <DateText>8 de março de 2021</DateText>
+              <DateText>{(task.date)}</DateText>
             </RowContainer>
           </ItemContainer>
         ))}

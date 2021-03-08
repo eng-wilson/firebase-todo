@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Alert } from 'react-native';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Input from '../../components/Input';
 // Utils
@@ -14,6 +15,14 @@ import {
 
 const AddTask = ({ navigation }) => {
   const formRef = useRef(null);
+  const [date, setDate] = useState(new Date(1598051730000));
+
+  const onChangeDate = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+
+    console.tron.log(currentDate);
+  };
 
   const getTasks = async () => {
     try {
@@ -23,6 +32,10 @@ const AddTask = ({ navigation }) => {
       return [];
     }
   };
+
+  function getFormattedDate() {
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  }
 
   async function handleSubmit(data) {
     try {
@@ -37,7 +50,7 @@ const AddTask = ({ navigation }) => {
 
       const storagedTasks = await getTasks();
 
-      await AsyncStorage.setItem('@tasks', JSON.stringify([...storagedTasks, data]));
+      await AsyncStorage.setItem('@tasks', JSON.stringify([...storagedTasks, { title: data.title, description: data.description, date: getFormattedDate() }]));
 
       Alert.alert('Sucesso ✅', 'Tarefa adicionada à lista');
     } catch (err) {
@@ -57,6 +70,16 @@ const AddTask = ({ navigation }) => {
 
         <Label>Descrição</Label>
         <Input name="description" multiline />
+
+        <Label>Data</Label>
+
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode="date"
+          display="default"
+          onChange={onChangeDate}
+        />
 
         <ButtonsContainer>
           <ActionButton action="back" onPress={() => navigation.goBack()}>
