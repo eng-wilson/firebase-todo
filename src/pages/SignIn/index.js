@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '@unform/mobile';
 
 import Input from '../../components/Input';
@@ -14,17 +14,13 @@ import {
 const SignIn = ({ navigation }) => {
   const dispatch = useDispatch();
   const formRef = useRef(null);
-  const [fetching, setFetching] = useState(false);
+  const { fetching } = useSelector((state) => state.auth);
 
   function handleSubmit(data) {
     try {
-      setFetching(true);
-
       dispatch(AuthActions.authRequest(data.email, data.password));
-
-      setFetching(false);
     } catch (e) {
-      setFetching(false);
+      console.tron.log(e);
     }
   }
 

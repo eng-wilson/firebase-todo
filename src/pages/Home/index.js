@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  Image, FlatList, RefreshControl, Alert,
+  Image, FlatList, RefreshControl, Alert, ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,12 +23,12 @@ import {
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { tasks } = useSelector((state) => state.tasks);
-  const { fetching } = useSelector((state) => state.tasks);
+  const { tasks, fetching } = useSelector((state) => state.tasks);
+  const { uid } = useSelector((state) => state.auth);
 
   function getTasks() {
     try {
-      dispatch(TasksActions.tasksRequest());
+      dispatch(TasksActions.tasksRequest(uid));
     } catch (e) {
       Alert.alert('Ops', 'Não foi possível obter a lista de tarefas');
     }
@@ -48,7 +48,7 @@ const Home = ({ navigation }) => {
     });
   }, []);
 
-  return (
+  return fetching ? <ActivityIndicator style={{ flex: 1 }} /> : (
     <Container>
 
       <TitleContainer>

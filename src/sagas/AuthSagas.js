@@ -11,13 +11,10 @@ export function* getSignIn(action) {
     const response = yield call(() => auth().signInWithEmailAndPassword(email, password));
 
     if (response) {
-      // const { refreshToken } = response.user;
-
-      Alert.alert('Success ✅', 'Authenticated successfully');
-
       yield put(AuthActions.authSuccess(response.user.uid));
     }
   } catch (error) {
+    Alert.alert('Não foi possível realizar o login', 'Tente novamente');
     yield put(AuthActions.authFailure(error.message));
   }
 }
@@ -29,11 +26,10 @@ export function* getSignUp(action) {
     const response = yield call(() => auth().createUserWithEmailAndPassword(email, password));
 
     if (response) {
-      Alert.alert('Success ✅', 'Authenticated successfully');
-
       yield put(AuthActions.authSuccess(response.user.uid));
     }
   } catch (error) {
+    Alert.alert('Não foi possível realizar o cadastro', 'Tente novamente');
     yield put(AuthActions.authFailure(error.message));
   }
 }

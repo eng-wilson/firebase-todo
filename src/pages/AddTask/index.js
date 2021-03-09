@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Alert, ActivityIndicator, Platform } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -18,6 +19,7 @@ const AddTask = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [fetching, setFetching] = useState(false);
   const [show, setShow] = useState(false);
+  const { uid } = useSelector((state) => state.auth);
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -44,6 +46,7 @@ const AddTask = ({ navigation }) => {
           title: data.title,
           description: data.description,
           date: firestore.Timestamp.fromDate(date),
+          uid,
         });
 
       setFetching(false);
@@ -59,6 +62,10 @@ const AddTask = ({ navigation }) => {
       setFetching(false);
     }
   }
+
+  useEffect(() => {
+    setShow(Platform.OS === 'ios');
+  }, []);
 
   return fetching ? <ActivityIndicator style={{ flex: 1 }} /> : (
     <Container>

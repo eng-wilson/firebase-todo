@@ -84,6 +84,8 @@ const TaskDetails = ({ route, navigation }) => {
 
   useEffect(() => {
     formRef.current.setData({ title: task.data.title, description: task.data.description });
+
+    setShow(Platform.OS === 'ios');
   }, []);
 
   return fetching ? <ActivityIndicator style={{ flex: 1 }} /> : (
